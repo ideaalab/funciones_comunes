@@ -1,5 +1,6 @@
 /*
  * Funciones comunes agrupadas
+ * Las funciones que no se usan no se compilan ni ocupan espacio
  */
 
 /* DEFINES */
@@ -25,6 +26,8 @@ void ParpadearLED(int num, long th, long tl);
 
 short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn, short estado);
 short ParpadearLEDreturnBtn(int num, long th, long tl);
+
+int CausaReinicio(void);
 
 /* FUNCIONES */
 
@@ -139,4 +142,50 @@ short ParpadearLEDreturnBtn(int num, long th, long tl){
 	}
 	
 	return(P);
+}
+
+/*
+ * Devuelve un valor con la causa del reinicio
+ * Sirve para localizar errores y reinicios no contemplados
+ */
+int CausaReinicio(void){
+	int a = 0;
+	
+	switch(restart_cause()){
+		case NORMAL_POWER_UP:
+			a = 1;
+			break;
+		case MCLR_FROM_POWER_UP:
+			a = 2;
+			break;
+		case BROWNOUT_RESTART:
+			a = 3;
+			break;
+		case MCLR_FROM_SLEEP:
+			a = 4;
+			break;
+		case WDT_TIMEOUT:
+			a = 5;
+			break;
+		case WDT_FROM_SLEEP:
+			a = 6;
+			break;
+		case INTERRUPT_FROM_SLEEP:
+			a = 7;
+			break;
+		case MCLR_FROM_RUN:
+			a = 8;
+			break;
+		case RESET_INSTRUCTION:
+			a = 9;
+			break;
+		case STACK_OVERFLOW:
+			a = 10;
+			break;
+		case STACK_UNDERFLOW:
+			a = 11;
+			break;
+	}
+	
+	return(a);
 }
