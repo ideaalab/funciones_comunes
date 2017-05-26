@@ -47,17 +47,21 @@ void WaitBtn(int pin, short estado){
  * Espera a que el pulsador se suelte
  * Esta funcion es mas eficiente, pero requiere que el pulsador este declarado como P_BTN
  */
+#ifdef P_BTN
 void WaitBtnPulsado(void){
 	while(input(P_BTN) == PULSADO){delay_ms(MS_ANTIREBOTE);}
 }
+#endif
 
 /*
  * Espera a que el pulsador se presione
  * Esta funcion es mas eficiente, pero requiere que el pulsador este declarado como P_BTN
  */
+#ifdef P_BTN
 void WaitBtnNoPulsado(void){
 	while(input(P_BTN) == NO_PULSADO){delay_ms(MS_ANTIREBOTE);}
 }
+#endif
 
 /*
  * Hace parpadear un LED
@@ -84,6 +88,7 @@ void ParpadearLED(int pin, int num, long th, long tl){
  * Esta funcion es mas eficiente que la anterior, pero requiere que el LED este
  * declarado como P_LED
  */
+#ifdef P_LED
 void ParpadearLED(int num, long th, long tl){
 	for(int x=0; x<num; x++){
 		output_high(P_LED);
@@ -92,6 +97,7 @@ void ParpadearLED(int num, long th, long tl){
 		delay_ms(tl);
 	}
 }
+#endif
 
 /*
  * Parpadea el LED
@@ -128,6 +134,7 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
  * Esta funcion es mas eficiente que la anterior, pero requiere que el LED este
  * declarado como P_LED y el pulsador como P_BTN
  */
+#ifdef P_LED
 short ParpadearLEDreturnBtn(int num, long th, long tl){
 	short P = FALSE;
 	int x;
@@ -143,6 +150,7 @@ short ParpadearLEDreturnBtn(int num, long th, long tl){
 	
 	return(P);
 }
+#endif
 
 /*
  * Devuelve un valor con la causa del reinicio
