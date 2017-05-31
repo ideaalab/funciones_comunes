@@ -4,6 +4,14 @@
  */
 
 /* DEFINES */
+#ifndef TRUE
+#define TRUE	1
+#endif
+
+#ifndef FALSE
+#define FALSE	0
+#endif
+
 #ifndef MS_ANTIREBOTE
 #define MS_ANTIREBOTE	20
 #endif
