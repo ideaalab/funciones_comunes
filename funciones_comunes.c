@@ -79,7 +79,6 @@ void WaitBtnNoPulsado(void){
  * -tl: tiempo low que debe permanecer apagado el LED
  */
 void ParpadearLED(int pin, int num, long th, long tl){
-#warning "Se ha cambiado el orden de los parametros!"
 	for(int x=0; x<num; x++){
 		output_high(pin);
 		delay_ms(th);
