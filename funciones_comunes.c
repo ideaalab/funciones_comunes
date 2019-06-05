@@ -17,7 +17,8 @@
 #endif
 
 #ifndef PULSADO
-#ERROR "Hay que declara si pulsado es 0 o 1"
+#warning "Hay que declara si pulsado es 0 o 1"
+#define PULSADO		0
 #else
 	#ifndef NO_PULSADO
 	#define NO_PULSADO	!PULSADO
@@ -142,6 +143,7 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
  * declarado como P_LED y el pulsador como P_BTN
  */
 #ifdef P_LED
+#ifdef P_BTN
 short ParpadearLEDreturnBtn(int num, long th, long tl){
 	short P = FALSE;
 	int x;
@@ -157,6 +159,7 @@ short ParpadearLEDreturnBtn(int num, long th, long tl){
 	
 	return(P);
 }
+#endif
 #endif
 
 /*
