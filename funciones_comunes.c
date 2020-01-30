@@ -37,6 +37,9 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
 short ParpadearLEDreturnBtn(int num, long th, long tl);
 
 int CausaReinicio(void);
+#if definedinc(STDOUT)
+void CausaReinicio_Serial(int rst);
+#endif
 
 /* FUNCIONES */
 
@@ -207,3 +210,55 @@ int CausaReinicio(void){
 	
 	return(a);
 }
+
+#if definedinc(STDOUT)
+/*
+ * Imprimer por el puerto serie la causa del reinicio
+ * Sirve para localizar errores y reinicios no contemplados
+ */
+void CausaReinicio_Serial(int rst){
+	char msg[20];
+	
+	printf("\r\n> Inicio: ");
+	
+	switch(rst){
+		case NORMAL_POWER_UP:
+			msg = "Normal power up";
+			break;
+		case MCLR_FROM_POWER_UP:
+			msg = "MCLR";
+			break;
+		case BROWNOUT_RESTART:
+			msg = "Brownout restart";
+			break;
+		case MCLR_FROM_SLEEP:
+			msg = "MCLR from sleep";
+			break;
+		case WDT_TIMEOUT:
+			msg = "WDT timeout";
+			break;
+		case WDT_FROM_SLEEP:
+			msg = "WDT from sleep";
+			break;
+		case INTERRUPT_FROM_SLEEP:
+			msg = "Interrupt from sleep";
+			break;
+		case MCLR_FROM_RUN:
+			msg = "MCLR from run";
+			break;
+		case RESET_INSTRUCTION:
+			msg = "Reset instruction";
+			break;
+		case STACK_OVERFLOW:
+			msg = "Stack overflow";
+			break;
+		case STACK_UNDERFLOW:
+			msg = "Stack underflow";
+			break;
+		default:
+			msg = "Undefined";
+	}
+	
+	printf("%s (%02X)\r\n\r\n", msg, rst);
+}
+#endif
