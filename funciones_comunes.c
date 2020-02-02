@@ -17,7 +17,7 @@
 #endif
 
 #ifndef PULSADO
-#warning "Hay que declara si pulsado es 0 o 1"
+#warning "Hay que declarar si pulsado es 0 o 1"
 #define PULSADO		0
 #else
 	#ifndef NO_PULSADO
@@ -39,6 +39,9 @@ short ParpadearLEDreturnBtn(int num, long th, long tl);
 int CausaReinicio(void);
 #if definedinc(STDOUT)
 void CausaReinicio_Serial(int rst);
+#if getenv("DATA_EEPROM") > 0
+void print_eeprom(void);
+#endif
 #endif
 
 /* FUNCIONES */
@@ -217,7 +220,7 @@ int CausaReinicio(void){
  * Sirve para localizar errores y reinicios no contemplados
  */
 void CausaReinicio_Serial(int rst){
-	char msg[20];
+	char msg[21];
 	
 	printf("\r\n> Inicio: ");
 	
@@ -261,4 +264,46 @@ void CausaReinicio_Serial(int rst){
 	
 	printf("%s (%02X)\r\n\r\n", msg, rst);
 }
+
+/*
+ * Sirve para leer lo que hay en la EEPROM interna y mostrarlo por puerto serie
+ */
+#if getenv("DATA_EEPROM") > 0
+void print_eeprom(void){
+long len = getenv("DATA_EEPROM");
+#if getenv("DATA_EEPROM") <= 256
+int linea = 0;
+#else
+long linea = 0;
+#endif
+	
+	printf("DATA EEPROM: %Lu bytes\r\n\r\n", len);
+
+	//imprimimos cabeceras de columna
+	printf("    ");
+	for(int x = 0; x < 8; x++){
+		printf(" %02u", x);
+	}
+	printf("\r\n");
+	
+	//imprimimos valores
+	for(long x = 0; x < len; x++){
+		//imprimo cambio de linea en los multiplos de 8
+		if(x%8 == 0){
+			//imprimo cambio de linea en los multiplos de 64
+			if((x%64 == 0) && (x != 0)){
+				printf("\r\n");
+			}
+			
+			//imprimimos numero de linea
+			printf("\r\n%02LX:  ", linea);
+			linea = linea + 8;
+		}
+		
+		printf("%02X ", read_eeprom(x));	//imprimo valor
+	}
+	
+	printf("\r\n\r\n");
+}
+#endif
 #endif
