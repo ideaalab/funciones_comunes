@@ -17,8 +17,7 @@
 #endif
 
 #ifndef PULSADO
-#warning "Hay que declarar si pulsado es 0 o 1"
-#define PULSADO		0
+#error "Hay que declarar si pulsado es 0 o 1"
 #else
 	#ifndef NO_PULSADO
 	#define NO_PULSADO	!PULSADO
@@ -32,11 +31,11 @@ void WaitBtn(int pin, short estado);
 void WaitBtnPulsado(void);
 void WaitBtnNoPulsado(void);
 
-void ParpadearLED(int pin, int num, long th, long tl);
-void ParpadearLED(int num, long th, long tl);
+void ParpadearLED(int pin, int veces, long th, long tl);
+void ParpadearLED(int veces, long th, long tl);
 
-short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn, short estado);
-short ParpadearLEDreturnBtn(int num, long th, long tl);
+short ParpadearLEDreturnBtn(int pin_led, int veces, long th, long tl, int pin_btn, short estado);
+short ParpadearLEDreturnBtn(int veces, long th, long tl);
 
 #if DATA_EEPROM_SIZE > 0
 void erase_eeprom(void);
@@ -93,8 +92,8 @@ void WaitBtnNoPulsado(void){
  * -th: tiempo high que debe permanecer encendido el LED
  * -tl: tiempo low que debe permanecer apagado el LED
  */
-void ParpadearLED(int pin, int num, long th, long tl){
-	for(int x=0; x<num; x++){
+void ParpadearLED(int pin, int veces, long th, long tl){
+	for(int x=0; x<veces; x++){
 		output_high(pin);
 		delay_ms(th);
 		output_low(pin);
@@ -104,15 +103,15 @@ void ParpadearLED(int pin, int num, long th, long tl){
 
 /*
  * Hace parpadear un LED
- * -num: numero de veces que queremos que el LED parpadee
+ * -veces: numero de veces que queremos que el LED parpadee
  * -th: tiempo high que debe permanecer encendido el LED
  * -tl: tiempo low que debe permanecer apagado el LED
  * Esta funcion es mas eficiente que la anterior, pero requiere que el LED este
  * declarado como P_LED
  */
 #ifdef P_LED
-void ParpadearLED(int num, long th, long tl){
-	for(int x=0; x<num; x++){
+void ParpadearLED(int veces, long th, long tl){
+	for(int x=0; x<veces; x++){
 		output_high(P_LED);
 		delay_ms(th);
 		output_low(P_LED);
@@ -125,17 +124,17 @@ void ParpadearLED(int num, long th, long tl){
  * Parpadea el LED
  * Devuelve TRUE si se presiono el pulsador mientras estaba en esta funcion
  * -pin_led: es el pin del led que queremos hacer parpadear (en formato PIN_A0)
- * -num: numero de veces que queremos que parpadee el led
+ * -veces: numero de veces que queremos que parpadee el led
  * -th: tiempo que mantiene el LED encendido
  * -tl: tiempo que mantiene el LED apagado
  * -pin_btn: es el pin del pulsador que estamos comprobando (en formato PIN_A0)
  * -estado: es el estado que estamos comprobando
  */
-short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn, short estado){
+short ParpadearLEDreturnBtn(int pin_led, int veces, long th, long tl, int pin_btn, short estado){
 	short P = FALSE;
 	int x;
 	
-	for(x=0;x<num;x++){
+	for(x=0;x<veces;x++){
 		if(input(pin_btn) == estado){P = TRUE;}
 		output_high(pin_led);
 		delay_ms(th);
@@ -150,7 +149,7 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
 /*
  * Parpadea el LED
  * Devuelve TRUE si se presiono el pulsador mientras estaba en esta funcion
- * -num: numero de veces que queremos que parpadee el led
+ * -veces: numero de veces que queremos que parpadee el led
  * -th: tiempo que mantiene el LED encendido
  * -tl: tiempo que mantiene el LED apagado
  * Esta funcion es mas eficiente que la anterior, pero requiere que el LED este
@@ -158,11 +157,11 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
  */
 #ifdef P_LED
 #ifdef P_BTN
-short ParpadearLEDreturnBtn(int num, long th, long tl){
+short ParpadearLEDreturnBtn(int veces, long th, long tl){
 	short P = FALSE;
 	int x;
 	
-	for(x=0;x<num;x++){
+	for(x=0;x<veces;x++){
 		if(input(P_BTN) == PULSADO){P = TRUE;}
 		output_high(P_LED);
 		delay_ms(th);
