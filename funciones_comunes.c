@@ -175,6 +175,7 @@ short ParpadearLEDreturnBtn(int veces, long th, long tl){
 #endif
 #endif
 
+//Funciones disponibles para PICs que tengan EEPROM interna
 #if DATA_EEPROM_SIZE > 0
 /*
  * Borra la EEPROM interna
@@ -199,14 +200,7 @@ void fill_eeprom(int val){
  * Sirve para leer lo que hay en la EEPROM interna y mostrarlo por puerto serie
  */
 void print_eeprom(void){
-//long len = DATA_EEPROM_SIZE
-#if DATA_EEPROM_SIZE <= 256
-int linea = 0;
-#else
-long linea = 0;
-#endif
-	
-	printf("DATA EEPROM: %Lu bytes\r\n\r\n", DATA_EEPROM_SIZE);
+	printf("\r\nDATA EEPROM: %Lu bytes\r\n\r\n", DATA_EEPROM_SIZE);
 
 	//imprimimos cabeceras de columna
 	printf("    ");
@@ -225,8 +219,7 @@ long linea = 0;
 			}
 			
 			//imprimimos numero de linea
-			printf("\r\n%02LX:  ", linea);
-			linea = linea + 8;
+			printf("\r\n%02LX:  ", x);
 		}
 		
 		printf("%02X ", read_eeprom(x));	//imprimo valor
