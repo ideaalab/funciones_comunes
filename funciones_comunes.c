@@ -278,52 +278,49 @@ int CausaReinicio(void){
 
 #if definedinc(STDOUT)
 /*
- * Imprimer por el puerto serie la causa del reinicio
+ * Imprime por el puerto serie la causa del reinicio
  * Sirve para localizar errores y reinicios no contemplados
  */
 void CausaReinicio_Serial(int rst){
-	char msg[21];
-	
 	printf("\r\n> Inicio: ");
-	
+
 	switch(rst){
 		case NORMAL_POWER_UP:
-			msg = "Normal power up";
+			printf("Normal power up");
 			break;
 		case MCLR_FROM_POWER_UP:
-			msg = "MCLR";
+			printf("MCLR");
 			break;
 		case BROWNOUT_RESTART:
-			msg = "Brownout restart";
+			printf("Brownout restart");
 			break;
 		case MCLR_FROM_SLEEP:
-			msg = "MCLR from sleep";
+			printf("MCLR from sleep");
 			break;
 		case WDT_TIMEOUT:
-			msg = "WDT timeout";
+			printf("WDT timeout");
 			break;
 		case WDT_FROM_SLEEP:
-			msg = "WDT from sleep";
+			printf("WDT from sleep");
 			break;
 		case INTERRUPT_FROM_SLEEP:
-			msg = "Interrupt from sleep";
+			printf("Interrupt from sleep");
 			break;
 		case MCLR_FROM_RUN:
-			msg = "MCLR from run";
+			printf("MCLR from run");
 			break;
 		case RESET_INSTRUCTION:
-			msg = "Reset instruction";
+			printf("Reset instruction");
 			break;
 		case STACK_OVERFLOW:
-			msg = "Stack overflow";
+			printf("Stack overflow");
 			break;
 		case STACK_UNDERFLOW:
-			msg = "Stack underflow";
+			printf("Stack underflow");
 			break;
 		default:
-			msg = "Undefined";
+			printf("Undefined");
 	}
 	
-	printf("%s (%02X)\r\n\r\n", msg, rst);
+	printf(" (0x%02X)\r\n\r\n", rst);
 }
-#endif
