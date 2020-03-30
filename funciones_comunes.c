@@ -282,7 +282,7 @@ int CausaReinicio(void){
  * Sirve para localizar errores y reinicios no contemplados
  */
 void CausaReinicio_Serial(int rst){
-	printf("\r\n> Inicio: ");
+	printf("\r\n> Start: ");
 
 	switch(rst){
 		case NORMAL_POWER_UP:
