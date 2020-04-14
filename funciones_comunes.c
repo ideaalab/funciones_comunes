@@ -282,7 +282,7 @@ int CausaReinicio(void){
  * Sirve para localizar errores y reinicios no contemplados
  */
 void CausaReinicio_Serial(int rst){
-	printf("Start: ");
+	//printf("Start: ");
 
 	switch(rst){
 		case NORMAL_POWER_UP:
@@ -322,5 +322,5 @@ void CausaReinicio_Serial(int rst){
 			printf("Undefined");
 	}
 	
-	printf(" (0x%02X)", rst);
+	//printf(" (0x%02X)", rst);
 }
