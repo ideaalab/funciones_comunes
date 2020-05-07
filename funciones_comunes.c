@@ -324,3 +324,4 @@ void CausaReinicio_Serial(int rst){
 	
 	//printf(" (0x%02X)", rst);
 }
+#endif
