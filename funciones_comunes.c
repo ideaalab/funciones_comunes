@@ -33,6 +33,7 @@ void WaitBtnNoPulsado(void);
 
 void ParpadearLED(int pin, int num, long th, long tl);
 void ParpadearLED(int num, long th, long tl);
+void ParpadearLED(int num, long t);
 
 short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn, short estado);
 short ParpadearLEDreturnBtn(int num, long th, long tl);
@@ -116,6 +117,18 @@ void ParpadearLED(int num, long th, long tl){
 		delay_ms(th);
 		output_low(P_LED);
 		delay_ms(tl);
+	}
+}
+
+/*
+ * Misma funcion que arriba, pero usa el mismo tiempo H y L del parpadeo
+ */
+void ParpadearLED(int num, long t){
+	for(int x=0; x<num; x++){
+		output_high(P_LED);
+		delay_ms(t);
+		output_low(P_LED);
+		delay_ms(t);
 	}
 }
 #endif
