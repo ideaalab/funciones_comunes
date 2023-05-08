@@ -37,6 +37,7 @@ void ParpadearLED(int num, long t);
 
 short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn, short estado);
 short ParpadearLEDreturnBtn(int num, long th, long tl);
+short ParpadearLEDreturnBtn(int num, long t);
 
 #if DATA_EEPROM_SIZE > 0
 void erase_eeprom(void);
@@ -159,6 +160,8 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
 	return(P);
 }
 
+#ifdef P_LED
+#ifdef P_BTN
 /*
  * Parpadea el LED
  * Devuelve TRUE si se presiono el pulsador mientras estaba en esta funcion
@@ -168,8 +171,6 @@ short ParpadearLEDreturnBtn(int pin_led, int num, long th, long tl, int pin_btn,
  * Esta funcion es mas eficiente que la anterior, pero requiere que el LED este
  * declarado como P_LED y el pulsador como P_BTN
  */
-#ifdef P_LED
-#ifdef P_BTN
 short ParpadearLEDreturnBtn(int num, long th, long tl){
 	short P = FALSE;
 	int x;
@@ -181,6 +182,28 @@ short ParpadearLEDreturnBtn(int num, long th, long tl){
 		if(input(P_BTN) == PULSADO){P = TRUE;}
 		output_low(P_LED);
 		delay_ms(tl);
+	}
+	
+	return(P);
+}
+
+/*
+ * Parpadea el LED el mismo tiempo H que L
+ * Devuelve TRUE si se presiono el pulsador mientras estaba en esta funcion
+ * -num: numero de veces que queremos que parpadee el led
+ * -t: tiempo que mantiene el LED encendido y apagado
+ */
+short ParpadearLEDreturnBtn(int num, long t){
+	short P = FALSE;
+	int x;
+	
+	for(x=0;x<num;x++){
+		if(input(P_BTN) == PULSADO){P = TRUE;}
+		output_high(P_LED);
+		delay_ms(t);
+		if(input(P_BTN) == PULSADO){P = TRUE;}
+		output_low(P_LED);
+		delay_ms(t);
 	}
 	
 	return(P);
