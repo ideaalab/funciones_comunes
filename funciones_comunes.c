@@ -28,8 +28,12 @@
 
 /* PROTOTIPOS */
 void WaitBtn(int pin, short estado);
+void WaitBtnPulsado(int pin);
+void WaitBtnNoPulsado(int pin);
+#ifdef P_BTN
 void WaitBtnPulsado(void);
 void WaitBtnNoPulsado(void);
+#endif
 
 void ParpadearLED(int pin, int num, long th, long tl);
 void ParpadearLED(int num, long th, long tl);
@@ -68,6 +72,14 @@ void WaitBtn(int pin, short estado){
 }
 
 /*
+ * Espera a que el pulsador indicado se suelte
+ * -pin: es el pin del pulsador que estamos comprobando (en formato PIN_A0)
+ */
+void WaitBtnPulsado(int pin){
+	while(input(pin) == PULSADO){delay_ms(MS_ANTIREBOTE);}
+}
+
+/*
  * Espera a que el pulsador se suelte
  * Esta funcion es mas eficiente, pero requiere que el pulsador este declarado como P_BTN
  */
@@ -76,6 +88,14 @@ void WaitBtnPulsado(void){
 	while(input(P_BTN) == PULSADO){delay_ms(MS_ANTIREBOTE);}
 }
 #endif
+
+/*
+ * Espera a que el pulsador indicado se presione
+ * -pin: es el pin del pulsador que estamos comprobando (en formato PIN_A0)
+ */
+void WaitBtnNoPulsado(int pin){
+	while(input(pin) == NO_PULSADO){delay_ms(MS_ANTIREBOTE);}
+}
 
 /*
  * Espera a que el pulsador se presione
