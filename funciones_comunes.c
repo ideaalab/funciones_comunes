@@ -24,7 +24,12 @@
 	#endif
 #endif
 
+#ifndef DATA_EEPROM_SIZE
 #define DATA_EEPROM_SIZE		getenv("DATA_EEPROM")
+	#if DATA_EEPROM_SIZE == 0
+		#warning "PIC sin EEPROM interna"
+	#endif
+#endif
 
 /* PROTOTIPOS */
 void WaitBtn(int pin, short estado);
@@ -55,6 +60,9 @@ int CausaReinicio(void);
 
 #if definedinc(STDOUT)
 void CausaReinicio_Serial(int rst);
+void ShowBIN8(int8 val);
+void ShowBIN16(int16 val);
+void ShowBIN(int8 val);
 #endif
 
 /* FUNCIONES */
@@ -379,5 +387,41 @@ void CausaReinicio_Serial(int rst){
 	}
 	
 	//printf(" (0x%02X)", rst);
+}
+
+/*
+ * Muestra un int8 en binario por puerto serie
+ */
+void ShowBIN8(int8 val){
+	fputc('0');
+	fputc('b');
+	
+	ShowBin(val);
+}
+
+/*
+ * Muestra un int16 en binario por puerto serie
+ */
+void ShowBIN16(int16 val){
+int x;
+
+	fputc('0');
+	fputc('b');
+	
+	ShowBIN((val>>8) && 0xFF);	//muestra byte HI
+	fputc(' ');					//espacio entre bytes
+	ShowBIN(val && 0xFF);		//muestra byte LOW
+}
+
+/*
+ * Muestra por serial en binario los 8 bits de un byte
+ */
+private ShowBIN(int8 val){
+	for(x = 8; x > 0; x--){
+		if(bit_test(val, x-1) == 0)
+			fputc('0');
+		else
+			fputc('1');
+	}
 }
 #endif
